@@ -7,6 +7,7 @@
 #define ROLE_SCROLL 1 << 2
 
 #define FLAG_SHIFT   1 << 17
+#define FLAG_CTRL    1 << 18
 #define FLAG_COMMAND 1 << 20
 
 #define ENTER  0x0D

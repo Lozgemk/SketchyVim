@@ -23,6 +23,9 @@ which shows me the command line output on demand for example.
 (!): Accessible means, that the input field needs to conform to the accessibility
      standards for text input fields, else there is nothing we can do.
 
+## New Changes
+* Change the escape key from `esc` to `Ctrl-[`.
+
 ## Installation
 You can install this using brew from my tap:
 ```bash

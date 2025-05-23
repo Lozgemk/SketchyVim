@@ -205,9 +205,14 @@ void buffer_sync(struct buffer* buffer) {
   if (did_change) buffer_call_script(buffer, true);
 }
 
-void buffer_input(struct buffer* buffer, UniChar key, UniCharCount count) {
-  if (key == 0x1B) {
+void buffer_input(struct buffer* buffer, UniChar key, UniCharCount count, CGEventFlags flags) {
+  // Only Ctrl+[ triggers normal mode (handle both possible key codes)
+  if ((key == 0x5B && (flags & FLAG_CTRL)) || (key == 0x1B && (flags & FLAG_CTRL))) {
     vimKey(NORMAL_MODE);
+  }
+  // Block plain ESC from doing anything in vim, but allow all other keys
+  else if (key == 0x1B && !(flags & FLAG_CTRL)) {
+    // Do nothing - plain ESC is ignored for vim input
   }
   else {
     char_u key_str[sizeof(UniChar) * count + 1];

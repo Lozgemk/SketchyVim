@@ -210,13 +210,11 @@ CGEventRef ax_process_event(struct ax* ax, CGEventRef event) {
   if (character == ENTER && (flags & FLAG_SHIFT))
     return event;
 
-  // Shift Escape
-  if (character == ESCAPE && (flags & FLAG_SHIFT))
-    return event;
+
 
   if (ax->role == ROLE_TEXT) {
-    // Escape in normal mode
-    if (character == ESCAPE && ax->buffer.cursor.mode & NORMAL)
+    // Ctrl+[ in normal mode (handle both possible key codes)
+    if (((character == 0x5B && (flags & FLAG_CTRL)) || (character == 0x1B && (flags & FLAG_CTRL))) && ax->buffer.cursor.mode & NORMAL)
       return event;
 
     // Enter in normal mode
@@ -225,7 +223,7 @@ CGEventRef ax_process_event(struct ax* ax, CGEventRef event) {
     
     bool was_insert = ax->buffer.cursor.mode & INSERT
                       || !ax->buffer.cursor.mode;
-    buffer_input(&ax->buffer, character, count);
+    buffer_input(&ax->buffer, character, count, flags);
 
     // Insert mode is passed and only synced later
     if (was_insert && ax->buffer.cursor.mode & INSERT) return event;

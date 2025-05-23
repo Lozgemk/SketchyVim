@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <CoreText/CoreText.h>
+#include <Carbon/Carbon.h>
 #include "libvim/libvim.h"
 #include "line.h"
 #include "env_vars.h"
@@ -11,6 +12,8 @@
 
 #define VISUAL_BLOCK 0x16
 #define VISUAL_LINE  0x56
+
+#define FLAG_CTRL    1 << 18
 
 extern const char* read_file(char* path);
 extern bool vfork_exec(char *command, struct env_vars* env_vars);
@@ -37,7 +40,7 @@ struct buffer {
 };
 
 void buffer_begin(struct buffer* buffer);
-void buffer_input(struct buffer* buffer, UniChar key, UniCharCount count);
+void buffer_input(struct buffer* buffer, UniChar key, UniCharCount count, CGEventFlags flags);
 void buffer_clear(struct buffer* buffer);
 void buffer_revsync_text(struct buffer* buffer);
 void buffer_revsync_cursor(struct buffer* buffer);
